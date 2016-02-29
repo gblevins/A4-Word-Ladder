@@ -9,7 +9,7 @@ import java.util.List;
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface
 {
-    // delcare class members here.
+    // declare class members here.
 
     // add a constructor for this object. HINT: it would be a good idea to set up the dictionary there
 
