@@ -18,6 +18,8 @@ public class Dictionary
 		words = new ArrayList<String>();
 		this.convertFileToDictionary(filename);
 	}
+	
+	// take a file that should be a dictionary of 5 letter words and put the words in the ArrayList
 	public void convertFileToDictionary(String filename)
 	{
 		try 
