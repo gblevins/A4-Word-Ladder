@@ -29,14 +29,10 @@ public class WordLadderSolver implements Assignment4Interface
     	List<String> result = new ArrayList<String>();
     	if (dictionary.isMember(startWord) && dictionary.isMember(endWord))
     	{
-
+    	//	result.add(startWord);
     		List<String> pastWords = new ArrayList<String>();
-    		result = MakeLadder(startWord, endWord, 0, pastWords);
-    		/*Iterator a = result.iterator();
-    		while(a.hasNext()){
-    			String wor = (String) a.next();
-    			System.out.println(wor);
-    		}*/
+    		//result = MakeLadder(startWord, endWord, 0, pastWords);
+    		result.addAll(MakeLadder(startWord, endWord, 0, pastWords));
     	}
         //throw new UnsupportedOperationException("Not implemented yet!");
     	return result;
@@ -47,30 +43,36 @@ public class WordLadderSolver implements Assignment4Interface
     {
     	List<String> result = new ArrayList<String>();
     	if (fromWord.equals(toWord))
-    		return result;
-    	for (int i = positionLastChanged; i < 5; i++)
     	{
+    		result.add(toWord);
+    		return result;
+    		}
+    	for (int i = 0; i < 5; i++)
+    	//for (int i = positionLastChanged; i < 5; i++)
+    	{
+    		if (i == positionLastChanged){
+    			continue;
+    		}
     		StringBuilder newWord = new StringBuilder(fromWord);
     		for (int k = 0; k < 25; k++)
     		{
     			newWord.setCharAt(i, (char) ('a'+k));
 
-    			/*if (newWord.toString().equals("conks")){
-    				int z = 0;
-    				z++;
-    			}*/
     			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
 
     			{
     				pastWords.add(newWord.toString());
-    				System.out.println(newWord.toString());
-    				result.add(newWord.toString());
+    				//System.out.println(newWord.toString());
+    				//result.add(newWord.toString());
     				try
     				{
-    					result = MakeLadder(newWord.toString(), toWord, positionLastChanged + 1, pastWords);
+    					List<String> temp = MakeLadder(newWord.toString(), toWord, positionLastChanged + 1, pastWords);
+    					result.add(fromWord);
+    					result.addAll(temp);
     				}
     				catch (NoSuchLadderException e)
     				{
+    					result.remove(fromWord);
     					continue;
     				}
     				return result;
