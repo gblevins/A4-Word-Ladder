@@ -5,6 +5,7 @@
 
 package assignment4;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // do not change class name or interface it implements
@@ -32,16 +33,35 @@ public class WordLadderSolver implements Assignment4Interface
         throw new NoSuchLadderException("No ladder found.");
     }
     
-    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged)
+    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged) throws NoSuchLadderException
     {
-    	List<String> SolutionList = null;
-    	SolutionList.add(fromWord);
-    	
-    	List<String> candidateWords = null;
-    	String str = "testString";
-    	char[] charArray = str.toCharArray();
-    	
-    	
+    	List<String> result = new ArrayList<String>();
+    	if (fromWord.equals(toWord))
+    		return result;
+    	for (int i = positionLastChanged; i < 5; i++)
+    	{
+    		StringBuilder newWord = new StringBuilder(fromWord);
+    		//newWord.setCharAt(i, 'a');
+    		for (int k = 0; k < 25; k++)
+    		{
+    			newWord.setCharAt(i, (char) ('a'+k));
+    			if (dictionary.isMember(newWord.toString()))
+    			{
+    				System.out.println(newWord.toString());
+    				result.add(newWord.toString());
+    				try
+    				{
+    					result = MakeLadder(newWord.toString(), toWord, positionLastChanged + 1);
+    				}
+    				catch (NoSuchLadderException e)
+    				{
+    					continue;
+    				}
+    				return result;
+    			}
+    		}
+    	}
+    	throw new NoSuchLadderException("No ladder found.");
     }
 
     @Override
