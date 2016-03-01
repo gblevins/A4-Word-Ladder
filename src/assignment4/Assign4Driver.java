@@ -59,8 +59,10 @@ public class Assign4Driver
 				}
 				try 
 		        {
+					
 		            List<String> result = wordLadderSolver.computeLadder(words[0], words[1]);
 		            boolean correct = wordLadderSolver.validateResult(words[0], words[1], result);
+		            
 		        } 
 		        catch (NoSuchLadderException e) 
 		        {
