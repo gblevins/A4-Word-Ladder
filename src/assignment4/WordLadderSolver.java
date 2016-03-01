@@ -24,7 +24,16 @@ public class WordLadderSolver implements Assignment4Interface
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
         // implement this method
+    	if (dictionary.isMember(startWord) && dictionary.isMember(endWord))
+    	{
+    		
+    	}
         throw new UnsupportedOperationException("Not implemented yet!");
+    }
+    
+    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged)
+    {
+    	
     }
 
     @Override

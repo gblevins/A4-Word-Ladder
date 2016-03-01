@@ -10,7 +10,7 @@ public class Dictionary
 {
 	// list of all of the words from the dictionary file
 	ArrayList<String> words;
-	
+
 	// put words from an input file into the dictionary
 	// only works with 5 letter word dictionaries
 	public Dictionary(String filename)
