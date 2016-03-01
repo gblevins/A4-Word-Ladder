@@ -6,6 +6,7 @@
 package assignment4;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 // do not change class name or interface it implements
@@ -29,6 +30,11 @@ public class WordLadderSolver implements Assignment4Interface
     	{
     		List<String> pastWords = new ArrayList<String>();
     		List<String> result = MakeLadder(startWord, endWord, 0, pastWords);
+    		/*Iterator a = result.iterator();
+    		while(a.hasNext()){
+    			String wor = (String) a.next();
+    			System.out.println(wor);
+    		}*/
     	}
         //throw new UnsupportedOperationException("Not implemented yet!");
         throw new NoSuchLadderException("No ladder found.");
@@ -46,6 +52,10 @@ public class WordLadderSolver implements Assignment4Interface
     		for (int k = 0; k < 25; k++)
     		{
     			newWord.setCharAt(i, (char) ('a'+k));
+    			/*if (newWord.toString().equals("conks")){
+    				int z = 0;
+    				z++;
+    			}*/
     			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
     			{
     				pastWords.add(newWord.toString());
