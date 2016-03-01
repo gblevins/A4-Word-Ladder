@@ -27,13 +27,14 @@ public class WordLadderSolver implements Assignment4Interface
         // implement this method
     	if (dictionary.isMember(startWord) && dictionary.isMember(endWord))
     	{
-    		List<String> result = MakeLadder(startWord, endWord, 0);
+    		List<String> pastWords = new ArrayList<String>();
+    		List<String> result = MakeLadder(startWord, endWord, 0, pastWords);
     	}
         //throw new UnsupportedOperationException("Not implemented yet!");
         throw new NoSuchLadderException("No ladder found.");
     }
     
-    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged) throws NoSuchLadderException
+    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> pastWords) throws NoSuchLadderException
     {
     	List<String> result = new ArrayList<String>();
     	if (fromWord.equals(toWord))
@@ -45,13 +46,14 @@ public class WordLadderSolver implements Assignment4Interface
     		for (int k = 0; k < 25; k++)
     		{
     			newWord.setCharAt(i, (char) ('a'+k));
-    			if (dictionary.isMember(newWord.toString()))
+    			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
     			{
+    				pastWords.add(newWord.toString());
     				System.out.println(newWord.toString());
     				result.add(newWord.toString());
     				try
     				{
-    					result = MakeLadder(newWord.toString(), toWord, positionLastChanged + 1);
+    					result = MakeLadder(newWord.toString(), toWord, positionLastChanged + 1, pastWords);
     				}
     				catch (NoSuchLadderException e)
     				{
