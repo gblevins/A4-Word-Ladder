@@ -53,6 +53,10 @@ public class Assign4Driver
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
 			{
 				String words[] = s.split("\\s+");
+				if(checkErrors(words, wordLadderSolver)){
+					System.out.println("Invalid Input"); //can change to System.err.println
+					continue;
+				}
 				try 
 		        {
 		            List<String> result = wordLadderSolver.computeLadder(words[0], words[1]);
@@ -81,4 +85,17 @@ public class Assign4Driver
 			System.exit(-1);
 		}
 	}
+    
+    public static boolean checkErrors(String[] input, Assignment4Interface wordLadderSolver){
+    	if (input.length != 2){	//only want 2 input words, e.g. "money" and "honey"
+    		return true; //true means there are errors
+    	}
+    	if (input[0].length() != 5 || input[1].length() != 5){ //want only 5 letter words
+    		return true;
+    	}
+    	if(!((WordLadderSolver) wordLadderSolver).isWord(input[0]) || !((WordLadderSolver) wordLadderSolver).isWord(input[1])){
+    		return true;
+    	}
+    	return false; //false means no errors
+    }
 }

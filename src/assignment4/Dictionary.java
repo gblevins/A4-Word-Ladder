@@ -13,6 +13,11 @@ public class Dictionary
 	
 	// put words from an input file into the dictionary
 	// only works with 5 letter word dictionaries
+	public Dictionary(String filename)
+	{
+		words = new ArrayList<String>();
+		this.convertFileToDictionary(filename);
+	}
 	public void convertFileToDictionary(String filename)
 	{
 		try 
@@ -23,7 +28,7 @@ public class Dictionary
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
 			{
 				if (s.charAt(0) != '*'){
-					words.add(s.substring(0,5));
+					words.add(s.substring(0,5).toLowerCase());
 				}
 			}
 			reader.close();
@@ -45,7 +50,7 @@ public class Dictionary
 	// check if a word is in the dictionary
 	public boolean isMember(String word)
 	{
-		if (words.contains(word))
+		if (words.contains(word.toLowerCase()))
 		{
 			return true;
 		}

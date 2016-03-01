@@ -16,7 +16,7 @@ public class WordLadderSolver implements Assignment4Interface
     // add a constructor for this object. HINT: it would be a good idea to set up the dictionary there
 	WordLadderSolver(String dictionaryFile)
 	{
-		dictionary.convertFileToDictionary(dictionaryFile);
+		dictionary = new Dictionary(dictionaryFile);
 	}
 
     // do not change signature of the method implemented from the interface
@@ -34,4 +34,10 @@ public class WordLadderSolver implements Assignment4Interface
     }
 
     // add additional methods here
+    public boolean isWord(String word){		//this probably doesn't need its own function, since it implements the dictionary function
+    	if (dictionary.isMember(word)){
+    		return true;
+    	}
+    	return false;
+    }
 }
