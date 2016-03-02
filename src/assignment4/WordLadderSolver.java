@@ -41,7 +41,15 @@ public class WordLadderSolver implements Assignment4Interface
     	{
     		result.add(toWord);
     		return result;
-    		}
+    	}
+    	int letterDif = letterDifference(fromWord, toWord);
+    	if (letterDif <= 1)
+    	{
+    		result.add(fromWord);
+    		List<String> temp = MakeLadder(toWord, toWord, positionLastChanged + 1, pastWords);
+			result.addAll(temp);
+			return result;
+    	}
     	for (int i = 0; i < 5; i++)
     	{
     		if (i == positionLastChanged){
@@ -86,5 +94,19 @@ public class WordLadderSolver implements Assignment4Interface
     		return true;
     	}
     	return false;
+    }
+    
+    public int letterDifference(String fromWord, String toWord){
+    	int result = 0;
+    	char[] from = fromWord.toCharArray();
+    	char[] to = toWord.toCharArray();
+    	
+    	for (int i = 0; i <from.length; i++){
+    		if (from[i] != to[i])
+    		{
+    			result++;
+    		}
+    	}
+    	return result;
     }
 }
