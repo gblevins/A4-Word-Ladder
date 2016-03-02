@@ -1,6 +1,5 @@
 package assignment4;
 
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,17 +33,18 @@ public class Assign4Driver
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
 			{
 				String words[] = s.split("\\s+");
-				if(checkErrors(words, wordLadderSolver)){
-					System.out.println("Invalid Input"); //can change to System.err.println
+				if(checkErrors(words, wordLadderSolver))
+				{
+					System.err.println("Invalid input.");
 					continue;
 				}
-				try 
+				
+				try
 		        {
-					
 		            List<String> result = wordLadderSolver.computeLadder(words[0], words[1]);
-		            //boolean correct = wordLadderSolver.validateResult(words[0], words[1], result);
-		            Iterator a = result.iterator();
-		            while(a.hasNext()){
+		            Iterator<String> a = result.iterator();
+		            while(a.hasNext())
+		            {
 		            	System.out.println(a.next());
 		            }
 		            System.out.println("**********");
@@ -70,16 +70,15 @@ public class Assign4Driver
 		}
 	}
     
-    public static boolean checkErrors(String[] input, Assignment4Interface wordLadderSolver){
-    	if (input.length != 2){	// only want 2 input words, e.g. "money" and "honey"
-    		return true; // true means there are errors
-    	}
-    	if (input[0].length() != 5 || input[1].length() != 5){ //want only 5 letter words
+    // checks if the input was valid word pairs
+    public static boolean checkErrors(String[] input, Assignment4Interface wordLadderSolver)
+    {
+    	if (input.length != 2)	// only want 2 input words, e.g. "money" and "honey"
+    		return true; 		// true means there are errors
+    	if ((input[0].length() != 5) || (input[1].length() != 5)) //want only 5 letter words
     		return true;
-    	}
-    	if(!((WordLadderSolver) wordLadderSolver).isWord(input[0]) || !((WordLadderSolver) wordLadderSolver).isWord(input[1])){
+    	if(!((WordLadderSolver) wordLadderSolver).isWord(input[0]) || !((WordLadderSolver) wordLadderSolver).isWord(input[1]))
     		return true;
-    	}
-    	return false; // false means no errors
+    	return false; 			// false means no errors
     }
 }

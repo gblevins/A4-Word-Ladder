@@ -25,15 +25,18 @@ public class WordLadderSolver implements Assignment4Interface
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
     	List<String> result = new ArrayList<String>();
-    	if (dictionary.isMember(startWord) && dictionary.isMember(endWord))
+    	try
     	{
-    		List<String> pastWords = new ArrayList<String>();
+   			List<String> pastWords = new ArrayList<String>();
     		result.addAll(MakeLadder(startWord, endWord, 0, pastWords));
     	}
+    	catch (NoSuchLadderException e)
+    	{
+    		throw e;
+    	}
     	return result;
-        //throw new NoSuchLadderException("No ladder found.");
     }
-    
+
     private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> pastWords) throws NoSuchLadderException
     {
     	List<String> result = new ArrayList<String>();
@@ -89,20 +92,25 @@ public class WordLadderSolver implements Assignment4Interface
     }
 
     // add additional methods here
-    public boolean isWord(String word){		//this probably doesn't need its own function, since it implements the dictionary function
-    	if (dictionary.isMember(word)){
+    public boolean isWord(String word)
+    {
+    	if (dictionary.isMember(word))
+    	{
     		return true;
     	}
     	return false;
     }
-    
-    public int letterDifference(String fromWord, String toWord){
+
+    // count the number of different letter between to words
+    private int letterDifference(String word1, String word2)
+    {
     	int result = 0;
-    	char[] from = fromWord.toCharArray();
-    	char[] to = toWord.toCharArray();
+    	char[] chars1 = word1.toCharArray();
+    	char[] chars2 = word2.toCharArray();
     	
-    	for (int i = 0; i <from.length; i++){
-    		if (from[i] != to[i])
+    	for (int i = 0; i <chars1.length; i++)
+    	{
+    		if (chars1[i] != chars2[i])
     		{
     			result++;
     		}
