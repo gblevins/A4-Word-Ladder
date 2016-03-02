@@ -47,6 +47,7 @@ public class Assign4Driver
 		            while(a.hasNext()){
 		            	System.out.println(a.next());
 		            }
+		            System.out.println(result.size());
 		            System.out.println("**********");
 		            
 		        } 
