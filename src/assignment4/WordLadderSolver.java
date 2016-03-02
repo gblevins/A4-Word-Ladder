@@ -34,6 +34,7 @@ public class WordLadderSolver implements Assignment4Interface
     	{
     		throw e;
     	}
+    	////result.add(0, startWord);//// i think we should do this to simplify some recursive calls
     	return result;
     }
 
@@ -48,7 +49,7 @@ public class WordLadderSolver implements Assignment4Interface
     	int letterDif = letterDifference(fromWord, toWord);
     	if (letterDif <= 1)
     	{
-    		result.add(fromWord);
+    		result.add(fromWord); // i think that this should just add toWord and return
     		List<String> temp = MakeLadder(toWord, toWord, positionLastChanged + 1, pastWords);
 			result.addAll(temp);
 			return result;
