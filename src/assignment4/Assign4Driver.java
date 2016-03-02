@@ -20,26 +20,7 @@ public class Assign4Driver
 			System.exit(-1);
 		}
     	processLinesInFile(args);
-    }	
-//    	Dictionary dictionary = new Dictionary();
-//    	dictionary.convertFileToDictionary(args[0]);
-//    	
-//    	ArrayList<String> dict = new ArrayList<String>();	//will store the transaction inputs, line by line
-//		processLinesInFile (args[0], dict); 				// putting the transaction inputs in input
-//
-//        // Create a word ladder solver object
-//        Assignment4Interface wordLadderSolver = new WordLadderSolver();
-//
-//        try 
-//        {
-//            List<String> result = wordLadderSolver.computeLadder("money", "honey");
-//            boolean correct = wordLadderSolver.validateResult("money", "honey", result);
-//        } 
-//        catch (NoSuchLadderException e) 
-//        {
-//            e.printStackTrace();
-//        }
-//    }
+    }
 
     public static void processLinesInFile (String args[]) 
 	{
@@ -73,10 +54,6 @@ public class Assign4Driver
 		        {
 		            e.printStackTrace();
 		        }
-				//if (correct == true)
-				//{
-				//	System.out.println(result);
-				//}
 			}
 			reader.close();
 		}
@@ -94,8 +71,8 @@ public class Assign4Driver
 	}
     
     public static boolean checkErrors(String[] input, Assignment4Interface wordLadderSolver){
-    	if (input.length != 2){	//only want 2 input words, e.g. "money" and "honey"
-    		return true; //true means there are errors
+    	if (input.length != 2){	// only want 2 input words, e.g. "money" and "honey"
+    		return true; // true means there are errors
     	}
     	if (input[0].length() != 5 || input[1].length() != 5){ //want only 5 letter words
     		return true;
@@ -103,6 +80,6 @@ public class Assign4Driver
     	if(!((WordLadderSolver) wordLadderSolver).isWord(input[0]) || !((WordLadderSolver) wordLadderSolver).isWord(input[1])){
     		return true;
     	}
-    	return false; //false means no errors
+    	return false; // false means no errors
     }
 }
