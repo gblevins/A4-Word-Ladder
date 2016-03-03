@@ -27,18 +27,28 @@ public class WordLadderSolver implements Assignment4Interface
     	List<String> result = new ArrayList<String>();
     	try
     	{
-
     		List<String> pastWords = new ArrayList<String>();
     		pastWords.add(startWord);
     		result = MakeLadder(startWord, endWord, 0, pastWords);////
     		//MakeLadder(startWord, endWord, -1, result, pastWords); // -1 because we haven't changed any letters,
-    															   // so, we want to start changing from index 0 (first letter)
+    															// so, we want to start changing from index 0 (first letter)
+    	
     	}
     	catch (NoSuchLadderException e)
     	{
     		throw new NoSuchLadderException("No ladder found.");
     	}
+    	
     	result.add(0, startWord);//// i think we should do this to simplify some recursive calls
+    	if(result.size() > 2){
+			for (int i =2; i < result.size(); i++){
+    				
+	    		if (letterDifference(result.get(i), result.get(i-2)) == 1)
+	    		{
+	    			result.remove(i-1);
+	    		}
+			}
+		}
     	return result;
     }
     
@@ -132,10 +142,12 @@ public class WordLadderSolver implements Assignment4Interface
     	String currentBestGuess = new String();
     	while (true)
     	{
-	    	for (int i = 0; i < 5; i++)
+    		int i;
+    		int p = positionLastChanged;
+	    	for (i = 0; i < 5; i++)
 	    	{
-	    		//if (i == positionLastChanged)
-	    		//	continue;
+	    	//	if (i == positionLastChanged)
+	    		//continue;
 	    		StringBuilder newWord = new StringBuilder(fromWord);
 	    		//String currentBestGuess = new String();
 	    		for (int k = 0; k < 25; k++)
@@ -147,6 +159,7 @@ public class WordLadderSolver implements Assignment4Interface
 	    				if (currentBestGuess.isEmpty() || (letterDifference(currentBestGuess, toWord) > letterDifference(newWord.toString(), toWord)))
 	    				{
 	    					currentBestGuess = newWord.toString();
+	    					p = i;
 	    					if (letterDifference(currentBestGuess, toWord) == 0)
 	    					{
 	    						result.add(toWord);
@@ -191,7 +204,7 @@ public class WordLadderSolver implements Assignment4Interface
 	    	result.add(currentBestGuess);
 			try
 			{
-				result.addAll(MakeLadder(currentBestGuess, toWord, 0, pastWords));
+				result.addAll(MakeLadder(currentBestGuess, toWord, i, pastWords));
 			}
 			catch (NoSuchLadderException e)
 			{
