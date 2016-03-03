@@ -30,14 +30,15 @@ public class WordLadderSolver implements Assignment4Interface
 
     		List<String> pastWords = new ArrayList<String>();
     		pastWords.add(startWord);
-    		MakeLadder(startWord, endWord, -1, result, pastWords); // -1 because we havent changed any letters,
-    															   // so, we want to start changing from index 0 (frist letter)
+    		result = MakeLadder(startWord, endWord, 0, pastWords);////
+    		//MakeLadder(startWord, endWord, -1, result, pastWords); // -1 because we haven't changed any letters,
+    															   // so, we want to start changing from index 0 (first letter)
     	}
     	catch (NoSuchLadderException e)
     	{
-    		throw e;
+    		throw new NoSuchLadderException("No ladder found.");
     	}
-    	////result.add(0, startWord);//// i think we should do this to simplify some recursive calls
+    	result.add(0, startWord);//// i think we should do this to simplify some recursive calls
     	return result;
     }
     
@@ -104,6 +105,102 @@ public class WordLadderSolver implements Assignment4Interface
     		}
     	}
     	throw new NoSuchLadderException("No ladder found.");
+    }
+    
+    private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> pastWords) throws NoSuchLadderException
+
+    {
+    	List<String> result = new ArrayList<String>();
+    	//if (positionLastChanged > 4)
+    	//	throw new NoSuchLadderException("No ;adder found.");
+    	//base case 1, if fromWord is equal to toWord
+    	//if (fromWord.equals(toWord))
+    	//{
+    	//	result.add(toWord);
+    	//	return result;
+    	//}
+    	// base case 2: The following base case checks if the current word is only one letter away from the toWord
+    	//	if so then all we need to do is change that one letter and we get toWord, so we just add the fromWord to the ladder
+    	//	and then add toWord (e.g. honey -> money all we need to do is change the h to m, so we can just add both to
+    	//  the result and finish
+    	int letterDif = letterDifference(fromWord, toWord);
+    	if (letterDif <= 1)
+    	{
+    		result.add(toWord);
+			return result;
+    	}
+    	String currentBestGuess = new String();
+    	while (true)
+    	{
+	    	for (int i = 0; i < 5; i++)
+	    	{
+	    		//if (i == positionLastChanged)
+	    		//	continue;
+	    		StringBuilder newWord = new StringBuilder(fromWord);
+	    		//String currentBestGuess = new String();
+	    		for (int k = 0; k < 25; k++)
+	    		{
+	    			newWord.setCharAt(i, (char) ('a'+k));
+	
+	    			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
+	    			{
+	    				if (currentBestGuess.isEmpty() || (letterDifference(currentBestGuess, toWord) > letterDifference(newWord.toString(), toWord)))
+	    				{
+	    					currentBestGuess = newWord.toString();
+	    					if (letterDifference(currentBestGuess, toWord) == 0)
+	    					{
+	    						result.add(toWord);
+	    						return result;
+	    					}
+	    				}
+	    				
+	//    				pastWords.add(newWord.toString());
+	//    				try
+	//    				{
+	//    					result.add(fromWord);
+	//    					//next part is commented because it doesn't impact the size of the result in anyway
+	//    					//
+	//    					/*if(result.size() > 2){
+	//
+	//	    		    		if (letterDifference(fromWord, result.get(result.indexOf(fromWord)-2)) == 1)
+	//	    		    		{
+	//	    		    			result.remove(result.indexOf(fromWord)-1);
+	//	    		    		}
+	//    					}*/
+	//    					result.addAll(MakeLadder(newWord.toString(), toWord, i, pastWords));
+	//    					//I changed ^ by replacing positionLastChanged + 1 with i, because i will always accurately
+	//    					// reflect the position of the last changed word, whereas positionLastChanged + 1 would exceed
+	//    					// the bounds [0,4], which is incorrect (this would possibly allow for the last letter position
+	//    					// that was changed to be changed again (this is why I used the commented code above.).
+	//    					
+	//    				}
+	//    				catch (NoSuchLadderException e)
+	//    				{
+	//    					result.remove(fromWord);
+	//    					continue;
+	//    				}
+	//    				return result;
+	    			}
+	    		}
+	    	}
+	    	if (currentBestGuess.isEmpty())
+	    	{
+	    		throw new NoSuchLadderException("No ladder found.");
+	    	}
+	    	pastWords.add(currentBestGuess);
+	    	result.add(currentBestGuess);
+			try
+			{
+				result.addAll(MakeLadder(currentBestGuess, toWord, 0, pastWords));
+			}
+			catch (NoSuchLadderException e)
+			{
+				result.remove(currentBestGuess);
+				currentBestGuess = "";
+				continue;
+			}
+			return result;
+    	}
     }
 
     @Override
