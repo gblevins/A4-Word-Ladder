@@ -103,7 +103,7 @@ public class WordLadderSolver implements Assignment4Interface
     			}
     		}
     	}
-    	throw new NoSuchLadderException("No ladder found.");
+    	throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
     }
 
     @Override
