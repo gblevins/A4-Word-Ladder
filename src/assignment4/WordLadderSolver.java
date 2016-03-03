@@ -52,7 +52,7 @@ public class WordLadderSolver implements Assignment4Interface
     	return result;
     }
     
-    private void MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> result, List<String> pastWords) throws NoSuchLadderException
+  /*  private void MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> result, List<String> pastWords) throws NoSuchLadderException
 
     {
     	//base case 1, if fromWord is equal to toWord
@@ -91,13 +91,13 @@ public class WordLadderSolver implements Assignment4Interface
     					result.add(fromWord);
     					//next part is commented because it doesnt impact the size of the result in anyway
     					//
-    					/*if(result.size() > 2){
+    					//if(result.size() > 2){
 
-	    		    		if (letterDifference(fromWord, result.get(result.indexOf(fromWord)-2)) == 1)
-	    		    		{
-	    		    			result.remove(result.indexOf(fromWord)-1);
-	    		    		}
-    					}*/
+	    		    		//if (letterDifference(fromWord, result.get(result.indexOf(fromWord)-2)) == 1)
+	    		    		//{
+	    		    			//result.remove(result.indexOf(fromWord)-1);
+	    		    		//}
+    					//}
     					MakeLadder(newWord.toString(), toWord, i, result, pastWords);
     					//I changed ^ by replacing positionLastChanged + 1 with i, because i will always accurately
     					// reflect the position of the last changed word, whereas positionLastChanged + 1 would exceed
@@ -115,7 +115,7 @@ public class WordLadderSolver implements Assignment4Interface
     		}
     	}
     	throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
-    }
+    }*/
     
     private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> pastWords) throws NoSuchLadderException
 
