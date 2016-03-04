@@ -35,7 +35,7 @@ public class Assign4Driver
 				String words[] = s.split("\\s+");
 				if(checkErrors(words, wordLadderSolver))
 				{
-					System.err.println("Invalid input.");
+					System.err.println("At least one of the words \"" +words[0]+ "\" and \"" +words[1]+"\" are not legitimate 5-letter words from the dictionary.");
 					continue;
 				}
 				
@@ -44,6 +44,7 @@ public class Assign4Driver
 		            List<String> result = wordLadderSolver.computeLadder(words[0], words[1]);
 		            
 		            if(wordLadderSolver.validateResult(words[0], words[1], result)){
+		            	System.out.println("For the input words \"" +words[0]+ "\" and \"" +words[1]+"\" the following word ladder was found:" );
 			            Iterator<String> a = result.iterator();
 			            while(a.hasNext())
 			            {

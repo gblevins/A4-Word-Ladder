@@ -39,7 +39,7 @@ public class WordLadderSolver implements Assignment4Interface
     	}
     	catch (NoSuchLadderException e)
     	{
-    		throw new NoSuchLadderException("No ladder found.");
+    		throw new NoSuchLadderException("There is no word ladder between the words \"" +startWord+ "\" and \"" +endWord+"\"!");
     	}
     	
     	// if the code reaches here then a ladder was found so add the first word to the top of the ladder
@@ -101,7 +101,7 @@ public class WordLadderSolver implements Assignment4Interface
 	    	}
 	    	if (currentBestGuess.isEmpty())
 	    	{
-	    		throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
+	    		throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\"!");
 	    	}
 	    	pastWords.add(currentBestGuess);
 	    	result.add(currentBestGuess);
