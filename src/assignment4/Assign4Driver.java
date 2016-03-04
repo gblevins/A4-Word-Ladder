@@ -50,7 +50,7 @@ public class Assign4Driver
 			            {
 			            	System.out.println(a.next());
 			            }
-			            System.out.println(result.size());
+			            System.out.println("The number of words in this ladder is: " + result.size());
 			            System.out.println("**********");
 		            }
 		            else
