@@ -121,7 +121,19 @@ public class WordLadderSolver implements Assignment4Interface
     @Override
     public boolean validateResult(String startWord, String endWord, List<String> wordLadder) 
     {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (startWord.equals(wordLadder.get(0)) == false)
+        	return false;
+        
+        int index = 1;
+        
+        while (index < (wordLadder.size() - 1))
+        {
+        	if (dictionary.isMember(wordLadder.get(index)) == false)
+        		return false;
+        	// what's left is to check that every word is one letter apart and 
+        	// that each word is in the dictionary
+        	// and that the last word is equal to endWord
+        }
     }
 
     // check if a word is in the dictionary, for use of classes other than this one
