@@ -52,6 +52,8 @@ public class Assign4Driver
 			            System.out.println(result.size());
 			            System.out.println("**********");
 		            }
+		            else
+		            	System.err.println("The word ladder between \"" +words[0]+ "\" and \"" +words[1]+"\" is invalid." );
 		            
 		        } 
 		        catch (NoSuchLadderException e) 

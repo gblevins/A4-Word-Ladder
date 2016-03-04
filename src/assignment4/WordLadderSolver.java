@@ -101,7 +101,7 @@ public class WordLadderSolver implements Assignment4Interface
 	    	}
 	    	if (currentBestGuess.isEmpty())
 	    	{
-	    		throw new NoSuchLadderException("No ladder found.");
+	    		throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
 	    	}
 	    	pastWords.add(currentBestGuess);
 	    	result.add(currentBestGuess);
@@ -122,17 +122,47 @@ public class WordLadderSolver implements Assignment4Interface
     @Override
     public boolean validateResult(String startWord, String endWord, List<String> wordLadder) 
     {
-        if (wordLadder.get(0) != startWord && wordLadder.get(wordLadder.size()-1) != endWord)
+    	/*        if (startWord.equals(wordLadder.get(0)) == false)
+    	return false;
+    
+    int index = 1;
+    
+    while (index < (wordLadder.size() - 1))
+    {
+    	if (dictionary.isMember(wordLadder.get(index)) == false)
+    		return false;
+    	// what's left is to check that every word is one letter apart and 
+    	// that each word is in the dictionary
+    	// and that the last word is equal to endWord
+    }*/
+        if (wordLadder.get(0) != startWord || wordLadder.get(wordLadder.size()-1) != endWord)
 		{
 			return false;
 		}
+        // this next case is for two of the same words as startWord and endWord :
+        // 1. make sure the word ladder is only 2 elements long
+        // 2. the first and second elements should be equal and they each should equal both elements in the word ladder
+        // 3. startWord and endWord should be equal in this case
         
+        if(wordLadder.size() == 2 && wordLadder.get(1).equals(startWord) && wordLadder.get(0).equals(endWord) && startWord.equals(endWord)){
+        	if(!dictionary.isMember(wordLadder.get(0)))
+        		return false;
+        	return true;
+        }
         Iterator<String> validation = wordLadder.iterator();
         String prevWord = validation.next();
-        while (validation.hasNext()){
+        if(!dictionary.isMember(prevWord))
+        	return false;
+        while (validation.hasNext())
+        {
         	String word = validation.next();
+        	
+        	if(!dictionary.isMember(word))
+        		return false;
+        	
         	if (letterDifference(prevWord, word) != 1)
         		return false;
+        	
         	prevWord = word;
         }
         return true;
