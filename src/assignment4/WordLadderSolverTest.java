@@ -1,44 +1,53 @@
 package assignment4;
 
 import static org.junit.Assert.*;
-
-import java.util.Iterator;
+import org.junit.Test;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-public class WordLadderSolverTest {
-	// main is expecting 2 arguments
-	// dictionary file name first (args[0])
-    public void main(String[] args)
-    {
-    	if (args.length != 1)
-		{
-			System.err.println ("Error: Incorrect number of command line arguments");
-			System.exit(-1);
-		}
-		wordLadderSolver = new WordLadderSolver(args[0]);
-		testComputeLadder();
-    }
-    
-	Assignment4Interface wordLadderSolver;
-    
+public class WordLadderSolverTest
+{
+	// test the computeLadder method in the WordLadderSolver class
 	@Test
 	public void testComputeLadder()
 	{
+		// test1: atlas and zebra should have no ladder
+		Assignment4Interface wordLadderSolver = new WordLadderSolver("A4words.dat");
+		List<String> result = new ArrayList<String>();
+		boolean correct = false;
+		
 		try
 		{
-			List<String> result = wordLadderSolver.computeLadder("money", "honey");
-			Iterator<String> a = result.iterator();
-			while(a.hasNext())
-			{
-				System.out.println(a.next());
-			}
-			System.out.println("**********");
-		} 
+			result = wordLadderSolver.computeLadder("atlas", "zebra");
+		}
 		catch (NoSuchLadderException e)
 		{
-			e.printStackTrace();
+			correct = true;
+		}
+		
+		if (correct == false)
+		{
+			System.err.println("Test 1 failed.");
+			fail();
+		}
+		
+		// test2: heads and tails should have a ladder
+		correct = false;
+		
+		try
+		{
+			result = wordLadderSolver.computeLadder("heads", "tails");
+			correct = wordLadderSolver.validateResult("heads", "tails", result);
+		}
+		catch (NoSuchLadderException e)
+		{
+			System.err.println("Test 2 failed.");
+			fail();
+		}
+		
+		if (correct == false)
+		{
+			System.err.println("Test 2 failed.");
 			fail();
 		}
 	}

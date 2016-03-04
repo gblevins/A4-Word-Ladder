@@ -32,10 +32,6 @@ public class WordLadderSolver implements Assignment4Interface
     		
     		pastWords.add(startWord);
     		result = MakeLadder(startWord, endWord, 0, pastWords);
-    		// removed here is our first attempt at MakeLadder
-    		//MakeLadder(startWord, endWord, -1, result, pastWords);
-    		// -1 because we haven't changed any letters,
-    		// so, we want to start changing from index 0 (first letter)
     	}
     	catch (NoSuchLadderException e)
     	{
@@ -44,15 +40,6 @@ public class WordLadderSolver implements Assignment4Interface
     	
     	// if the code reaches here then a ladder was found so add the first word to the top of the ladder
     	result.add(0, startWord);
-    	// this next part searches for unnecessary pegs on the ladder (steps that can be skipped)
-//    	if(result.size() > 2)
-//    	{
-//			for (int i = 2; i < result.size(); i++)
-//			{
-//	    		if (letterDifference(result.get(i), result.get(i - 2)) == 1)
-//	    			result.remove(i - 1);
-//			}
-//		}
     	return result;
     }
     
@@ -119,40 +106,32 @@ public class WordLadderSolver implements Assignment4Interface
     	}
     }
 
+    // ensure that that a ladder is full of words that are one letter apart and in the dictionary and 
+    // start and end with the correct word
     @Override
     public boolean validateResult(String startWord, String endWord, List<String> wordLadder) 
     {
-    	/*        if (startWord.equals(wordLadder.get(0)) == false)
-    	return false;
-    
-    int index = 1;
-    
-    while (index < (wordLadder.size() - 1))
-    {
-    	if (dictionary.isMember(wordLadder.get(index)) == false)
-    		return false;
-    	// what's left is to check that every word is one letter apart and 
-    	// that each word is in the dictionary
-    	// and that the last word is equal to endWord
-    }*/
         if (wordLadder.get(0) != startWord || wordLadder.get(wordLadder.size()-1) != endWord)
 		{
 			return false;
 		}
+        
         // this next case is for two of the same words as startWord and endWord :
         // 1. make sure the word ladder is only 2 elements long
         // 2. the first and second elements should be equal and they each should equal both elements in the word ladder
         // 3. startWord and endWord should be equal in this case
-        
         if(wordLadder.size() == 2 && wordLadder.get(1).equals(startWord) && wordLadder.get(0).equals(endWord) && startWord.equals(endWord)){
         	if(!dictionary.isMember(wordLadder.get(0)))
         		return false;
         	return true;
         }
+        
         Iterator<String> validation = wordLadder.iterator();
         String prevWord = validation.next();
+        
         if(!dictionary.isMember(prevWord))
         	return false;
+        
         while (validation.hasNext())
         {
         	String word = validation.next();
@@ -195,54 +174,3 @@ public class WordLadderSolver implements Assignment4Interface
     	return result;
     }
 }
-
-// this is our first attempt at MakeLadder
-/*  private void MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> result, List<String> pastWords) throws NoSuchLadderException
-{
-	//base case 1, if fromWord is equal to toWord
-	if (fromWord.equals(toWord))
-	{
-		result.add(toWord);
-		return;
-	}
-	// base case 2: The following base case checks if the current word is only one letter away from the toWord
-	//	if so then all we need to do is change that one letter and we get toWord, so we just add the fromWord to the ladder
-	//	and then add toWord (e.g. honey -> money all we need to do is change the h to m, so we can just add both to
-	//  the result and finish
-	int letterDif = letterDifference(fromWord, toWord);
-	if (letterDif <= 1)
-	{
-		result.add(fromWord);
-		result.add(toWord);
-		return;
-	}
-	for (int i = 0; i < 5; i++)
-	{
-		if (i == positionLastChanged){
-			continue;
-		}
-		StringBuilder newWord = new StringBuilder(fromWord);
-		for (int k = 0; k < 25; k++)
-		{
-			newWord.setCharAt(i, (char) ('a'+k));
-
-			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
-
-			{
-				pastWords.add(newWord.toString());
-				try
-				{
-					result.add(fromWord);
-					MakeLadder(newWord.toString(), toWord, i, result, pastWords);
-				}
-				catch (NoSuchLadderException e)
-				{
-					result.remove(fromWord);
-					continue;
-				}
-				return;
-			}
-		}
-	}
-	throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
-}*/
