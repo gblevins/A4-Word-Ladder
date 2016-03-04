@@ -53,9 +53,7 @@ public class Assign4Driver
 		        } 
 		        catch (NoSuchLadderException e) 
 		        {
-		        	//e.printStackTrace();
 		        	System.err.println(e.getMessage());
-		        	//System.err.println("There is no word ladder between the words \"" +words[0]+ "\" and \"" +words[1]+"\".");
 		        }
 			}
 			reader.close();

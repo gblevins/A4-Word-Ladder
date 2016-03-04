@@ -8,148 +8,77 @@ package assignment4;
 import java.util.ArrayList;
 import java.util.List;
 
-// do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface
 {
     // dictionary of all valid 5 letter words
 	Dictionary dictionary;
 
-    // add a constructor for this object. HINT: it would be a good idea to set up the dictionary there
+    // constructor, builds the dictionary from the input dictionary file
 	WordLadderSolver(String dictionaryFile)
 	{
 		dictionary = new Dictionary(dictionaryFile);
 	}
 
-    // do not change signature of the method implemented from the interface
+    // build ladder between two words or throw that there is no ladder possible
     @Override
     public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException 
     {
     	List<String> result = new ArrayList<String>();
+    	
     	try
     	{
     		List<String> pastWords = new ArrayList<String>();
+    		
     		pastWords.add(startWord);
-    		result = MakeLadder(startWord, endWord, 0, pastWords);////
-    		//MakeLadder(startWord, endWord, -1, result, pastWords); // -1 because we haven't changed any letters,
-    															// so, we want to start changing from index 0 (first letter)
-    	
+    		result = MakeLadder(startWord, endWord, 0, pastWords);
+    		// removed here is our first attempt at MakeLadder
+    		//MakeLadder(startWord, endWord, -1, result, pastWords);
+    		// -1 because we haven't changed any letters,
+    		// so, we want to start changing from index 0 (first letter)
     	}
     	catch (NoSuchLadderException e)
     	{
     		throw new NoSuchLadderException("No ladder found.");
     	}
     	
-    	result.add(0, startWord);//// i think we should do this to simplify some recursive calls
-    	if(result.size() > 2){
-			for (int i =2; i < result.size(); i++){
-    				
-	    		if (letterDifference(result.get(i), result.get(i-2)) == 1)
-	    		{
-	    			result.remove(i-1);
-	    		}
-			}
-		}
+    	// if the code reaches here then a ladder was found so add the first word to the top of the ladder
+    	result.add(0, startWord);
+    	// this next part searches for unnecessary pegs on the ladder (steps that can be skipped)
+//    	if(result.size() > 2)
+//    	{
+//			for (int i = 2; i < result.size(); i++)
+//			{
+//	    		if (letterDifference(result.get(i), result.get(i - 2)) == 1)
+//	    			result.remove(i - 1);
+//			}
+//		}
     	return result;
     }
     
-  /*  private void MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> result, List<String> pastWords) throws NoSuchLadderException
-
-    {
-    	//base case 1, if fromWord is equal to toWord
-    	if (fromWord.equals(toWord))
-    	{
-    		result.add(toWord);
-    		return;
-    	}
-    	// base case 2: The following base case checks if the current word is only one letter away from the toWord
-    	//	if so then all we need to do is change that one letter and we get toWord, so we just add the fromWord to the ladder
-    	//	and then add toWord (e.g. honey -> money all we need to do is change the h to m, so we can just add both to
-    	//  the result and finish
-    	int letterDif = letterDifference(fromWord, toWord);
-    	if (letterDif <= 1)
-    	{
-    		result.add(fromWord);
-    		result.add(toWord);
-			return;
-    	}
-    	for (int i = 0; i < 5; i++)
-    	{
-    		if (i == positionLastChanged){
-    			continue;
-    		}
-    		StringBuilder newWord = new StringBuilder(fromWord);
-    		for (int k = 0; k < 25; k++)
-    		{
-    			newWord.setCharAt(i, (char) ('a'+k));
-
-    			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
-
-    			{
-    				pastWords.add(newWord.toString());
-    				try
-    				{
-    					result.add(fromWord);
-    					//next part is commented because it doesnt impact the size of the result in anyway
-    					//
-    					//if(result.size() > 2){
-
-	    		    		//if (letterDifference(fromWord, result.get(result.indexOf(fromWord)-2)) == 1)
-	    		    		//{
-	    		    			//result.remove(result.indexOf(fromWord)-1);
-	    		    		//}
-    					//}
-    					MakeLadder(newWord.toString(), toWord, i, result, pastWords);
-    					//I changed ^ by replacing positionLastChanged + 1 with i, because i will always accurately
-    					// reflect the position of the last changed word, whereas positionLastChanged + 1 would exceed
-    					// the bounds [0,4], which is incorrect (this would possibly allow for the last letter position
-    					// that was changed to be changed again (this is why I used the commented code above.).
-    					
-    				}
-    				catch (NoSuchLadderException e)
-    				{
-    					result.remove(fromWord);
-    					continue;
-    				}
-    				return;
-    			}
-    		}
-    	}
-    	throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
-    }*/
-    
     private List<String> MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> pastWords) throws NoSuchLadderException
-
     {
     	List<String> result = new ArrayList<String>();
-    	//if (positionLastChanged > 4)
-    	//	throw new NoSuchLadderException("No ;adder found.");
-    	//base case 1, if fromWord is equal to toWord
-    	//if (fromWord.equals(toWord))
-    	//{
-    	//	result.add(toWord);
-    	//	return result;
-    	//}
-    	// base case 2: The following base case checks if the current word is only one letter away from the toWord
-    	//	if so then all we need to do is change that one letter and we get toWord, so we just add the fromWord to the ladder
-    	//	and then add toWord (e.g. honey -> money all we need to do is change the h to m, so we can just add both to
-    	//  the result and finish
+
     	int letterDif = letterDifference(fromWord, toWord);
     	if (letterDif <= 1)
     	{
     		result.add(toWord);
 			return result;
     	}
+    	
     	String currentBestGuess = new String();
+		int i;
+		int lastPositionChanged = 0;
+    	
     	while (true)
     	{
-    		int i;
-    		int p = positionLastChanged;
 	    	for (i = 0; i < 5; i++)
 	    	{
-	    	//	if (i == positionLastChanged)
-	    		//continue;
+	    		if (i == positionLastChanged)
+	    			continue;
+	    		
 	    		StringBuilder newWord = new StringBuilder(fromWord);
-	    		//String currentBestGuess = new String();
+	    		
 	    		for (int k = 0; k < 25; k++)
 	    		{
 	    			newWord.setCharAt(i, (char) ('a'+k));
@@ -159,40 +88,13 @@ public class WordLadderSolver implements Assignment4Interface
 	    				if (currentBestGuess.isEmpty() || (letterDifference(currentBestGuess, toWord) > letterDifference(newWord.toString(), toWord)))
 	    				{
 	    					currentBestGuess = newWord.toString();
-	    					p = i;
+	    					lastPositionChanged = i;
 	    					if (letterDifference(currentBestGuess, toWord) == 0)
 	    					{
 	    						result.add(toWord);
 	    						return result;
 	    					}
 	    				}
-	    				
-	//    				pastWords.add(newWord.toString());
-	//    				try
-	//    				{
-	//    					result.add(fromWord);
-	//    					//next part is commented because it doesn't impact the size of the result in anyway
-	//    					//
-	//    					/*if(result.size() > 2){
-	//
-	//	    		    		if (letterDifference(fromWord, result.get(result.indexOf(fromWord)-2)) == 1)
-	//	    		    		{
-	//	    		    			result.remove(result.indexOf(fromWord)-1);
-	//	    		    		}
-	//    					}*/
-	//    					result.addAll(MakeLadder(newWord.toString(), toWord, i, pastWords));
-	//    					//I changed ^ by replacing positionLastChanged + 1 with i, because i will always accurately
-	//    					// reflect the position of the last changed word, whereas positionLastChanged + 1 would exceed
-	//    					// the bounds [0,4], which is incorrect (this would possibly allow for the last letter position
-	//    					// that was changed to be changed again (this is why I used the commented code above.).
-	//    					
-	//    				}
-	//    				catch (NoSuchLadderException e)
-	//    				{
-	//    					result.remove(fromWord);
-	//    					continue;
-	//    				}
-	//    				return result;
 	    			}
 	    		}
 	    	}
@@ -204,7 +106,7 @@ public class WordLadderSolver implements Assignment4Interface
 	    	result.add(currentBestGuess);
 			try
 			{
-				result.addAll(MakeLadder(currentBestGuess, toWord, i, pastWords));
+				result.addAll(MakeLadder(currentBestGuess, toWord, lastPositionChanged, pastWords));
 			}
 			catch (NoSuchLadderException e)
 			{
@@ -222,7 +124,7 @@ public class WordLadderSolver implements Assignment4Interface
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
-    // add additional methods here
+    // check if a word is in the dictionary, for use of classes other than this one
     public boolean isWord(String word)
     {
     	if (dictionary.isMember(word))
@@ -232,13 +134,13 @@ public class WordLadderSolver implements Assignment4Interface
     	return false;
     }
 
-    // count the number of different letter between to words
+    // count the number of different letters between to words
     private int letterDifference(String word1, String word2)
     {
     	int result = 0;
     	char[] chars1 = word1.toCharArray();
     	char[] chars2 = word2.toCharArray();
-    	
+
     	for (int i = 0; i <chars1.length; i++)
     	{
     		if (chars1[i] != chars2[i])
@@ -249,3 +151,54 @@ public class WordLadderSolver implements Assignment4Interface
     	return result;
     }
 }
+
+// this is our first attempt at MakeLadder
+/*  private void MakeLadder(String fromWord, String toWord, int positionLastChanged, List<String> result, List<String> pastWords) throws NoSuchLadderException
+{
+	//base case 1, if fromWord is equal to toWord
+	if (fromWord.equals(toWord))
+	{
+		result.add(toWord);
+		return;
+	}
+	// base case 2: The following base case checks if the current word is only one letter away from the toWord
+	//	if so then all we need to do is change that one letter and we get toWord, so we just add the fromWord to the ladder
+	//	and then add toWord (e.g. honey -> money all we need to do is change the h to m, so we can just add both to
+	//  the result and finish
+	int letterDif = letterDifference(fromWord, toWord);
+	if (letterDif <= 1)
+	{
+		result.add(fromWord);
+		result.add(toWord);
+		return;
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		if (i == positionLastChanged){
+			continue;
+		}
+		StringBuilder newWord = new StringBuilder(fromWord);
+		for (int k = 0; k < 25; k++)
+		{
+			newWord.setCharAt(i, (char) ('a'+k));
+
+			if (dictionary.isMember(newWord.toString()) && !pastWords.contains(newWord.toString()))
+
+			{
+				pastWords.add(newWord.toString());
+				try
+				{
+					result.add(fromWord);
+					MakeLadder(newWord.toString(), toWord, i, result, pastWords);
+				}
+				catch (NoSuchLadderException e)
+				{
+					result.remove(fromWord);
+					continue;
+				}
+				return;
+			}
+		}
+	}
+	throw new NoSuchLadderException("There is no word ladder between the words \"" +pastWords.get(0)+ "\" and \"" +toWord+"\".");
+}*/
