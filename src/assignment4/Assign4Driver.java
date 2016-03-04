@@ -42,13 +42,16 @@ public class Assign4Driver
 				try
 		        {
 		            List<String> result = wordLadderSolver.computeLadder(words[0], words[1]);
-		            Iterator<String> a = result.iterator();
-		            while(a.hasNext())
-		            {
-		            	System.out.println(a.next());
+		            
+		            if(wordLadderSolver.validateResult(words[0], words[1], result)){
+			            Iterator<String> a = result.iterator();
+			            while(a.hasNext())
+			            {
+			            	System.out.println(a.next());
+			            }
+			            System.out.println(result.size());
+			            System.out.println("**********");
 		            }
-		            System.out.println(result.size());
-		            System.out.println("**********");
 		            
 		        } 
 		        catch (NoSuchLadderException e) 

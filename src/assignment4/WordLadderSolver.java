@@ -6,6 +6,7 @@
 package assignment4;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class WordLadderSolver implements Assignment4Interface
@@ -121,7 +122,20 @@ public class WordLadderSolver implements Assignment4Interface
     @Override
     public boolean validateResult(String startWord, String endWord, List<String> wordLadder) 
     {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        if (wordLadder.get(0) != startWord && wordLadder.get(wordLadder.size()-1) != endWord)
+		{
+			return false;
+		}
+        
+        Iterator<String> validation = wordLadder.iterator();
+        String prevWord = validation.next();
+        while (validation.hasNext()){
+        	String word = validation.next();
+        	if (letterDifference(prevWord, word) != 1)
+        		return false;
+        	prevWord = word;
+        }
+        return true;
     }
 
     // check if a word is in the dictionary, for use of classes other than this one
